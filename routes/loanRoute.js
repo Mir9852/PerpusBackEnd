@@ -1,9 +1,9 @@
 const router = require('express').Router();
-const auth = require('../middlewares/auth');
-const loanController = require('../controllers/loanController');
+import auth from '../middlewares/auth';
+import { borrow, returnBook, myLoans } from '../controllers/loanController';
 
-router.post('/borrow', auth, loanController.borrow);
-router.put('/return/:id', auth, loanController.returnBook);
-router.get('/my', auth, loanController.myLoans);
+router.post('/borrow', auth, borrow);
+router.put('/return/:id', auth, returnBook);
+router.get('/my', auth, myLoans);
 
-module.exports = router;
+export default router;

@@ -1,6 +1,6 @@
-const { Loan, Book, sequelize } = require('../models');
+import { Loan, Book, sequelize } from '../models';
 
-exports.borrow = async (req, res) => {
+export async function borrow(req, res) {
   const t = await sequelize.transaction();
 
   try {
@@ -36,9 +36,9 @@ exports.borrow = async (req, res) => {
     await t.rollback();
     res.status(500).json({ message: err.message });
   }
-};
+}
 
-exports.returnBook = async (req, res) => {
+export async function returnBook(req, res) {
   const t = await sequelize.transaction();
 
   try {
@@ -85,9 +85,9 @@ exports.returnBook = async (req, res) => {
     await t.rollback();
     res.status(500).json({ message: err.message });
   }
-};
+}
 
-exports.myLoans = async (req, res) => {
+export async function myLoans(req, res) {
   const loans = await Loan.findAll({
     where: { userId: req.user.id },
     include: Book,
@@ -95,4 +95,4 @@ exports.myLoans = async (req, res) => {
   });
 
   res.json(loans);
-};
+}

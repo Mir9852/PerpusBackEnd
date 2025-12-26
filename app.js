@@ -1,9 +1,9 @@
-const express = require('express');
-const cors = require('cors');
+import express, { json } from 'express';
+import cors from 'cors';
 const app = express();
 
 app.use(cors());
-app.use(express.json());
+app.use(json());
 
 // Health check endpoint
 app.get('/health', (req, res) => {
@@ -19,4 +19,4 @@ app.use('/auth', require('./routes/authRoute'));
 app.use('/books', require('./routes/bookRoute'));
 app.use('/loans', require('./routes/loanRoute'));
 
-module.exports = app;
+export default app;

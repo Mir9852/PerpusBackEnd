@@ -1,9 +1,9 @@
 const router = require('express').Router();
-const auth = require('../middlewares/auth');
-const role = require('../middlewares/role');
-const bookController = require('../controllers/bookController');
+import auth from '../middlewares/auth';
+import { adminOnly } from '../middlewares/role';
+import { getAll, create } from '../controllers/bookController';
 
-router.get('/', auth, bookController.getAll);
-router.post('/', auth, role.adminOnly, bookController.create);
+router.get('/', auth, getAll);
+router.post('/', auth, adminOnly, create);
 
-module.exports = router;
+export default router;

@@ -1,8 +1,8 @@
-const { User } = require('../models');
-const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken');
+import { User } from '../models';
+import { compare, hash as _hash } from 'bcrypt';
+import { sign } from 'jsonwebtoken';
 
-exports.login = async (req, res) => {
+export async function login(req, res) {
   try {
     console.log(req.body);
 
@@ -24,14 +24,14 @@ exports.login = async (req, res) => {
       });
     }
 
-    const isValid = await bcrypt.compare(password, user.password);
+    const isValid = await compare(password, user.password);
     if (!isValid) {
       return res.status(401).json({
         message: 'Password salah'
       });
     }
 
-    const token = jwt.sign(
+    const token = sign(
       { id: user.id, role: user.role },
       process.env.JWT_SECRET,
       { expiresIn: '1d',
@@ -52,9 +52,9 @@ exports.login = async (req, res) => {
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
-};
+}
 
-exports.register = async (req, res) => {
+export async function register(req, res) {
   try {
     const { username, password, role } = req.body;
 
@@ -64,7 +64,7 @@ exports.register = async (req, res) => {
       });
     }
 
-    const hash = await bcrypt.hash(password, 10);
+    const hash = await _hash(password, 10);
 
     await User.create({
       username,
@@ -78,4 +78,4 @@ exports.register = async (req, res) => {
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
-};
+}
